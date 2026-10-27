@@ -1,12 +1,11 @@
 name: Bot Pemantau Saham
 
 on:
-  # Mengatur jadwal otomatis (Cron Job)
-  # Contoh di bawah berjalan setiap 4 sekali dari Senin sampai Jumat
   schedule:
-    - cron: '0 */4 * * 1-5'
+    # Berjalan setiap 1 jam dari pukul 02:00 UTC sampai 08:00 UTC (sekitar jam 09:00 - 15:00 WIB) 
+    # dari hari Senin (1) sampai Jumat (5)
+    - cron: '0 2-8 * * 1-5'
   
-  # Memungkinkan Anda menjalankan bot secara manual dari tab Actions di GitHub kapan saja
   workflow_dispatch:
 
 jobs:
