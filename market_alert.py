@@ -7,6 +7,7 @@ TOKEN = os.getenv("TELEGRAM_TOKEN", "TOKEN_ANDA_JIKA_DI_LOKAL")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "CHAT_ID_ANDA_JIKA_DI_LOKAL")
 
 def kirim_pesan_telegram(pesan):
+    # Mengatasi batasan panjang pesan Telegram (maks 4096 karakter)
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     payload = {"chat_id": CHAT_ID, "text": pesan, "parse_mode": "Markdown"}
     try:
@@ -17,9 +18,9 @@ def kirim_pesan_telegram(pesan):
         print(f"Error koneksi Telegram: {e}")
 
 def cek_pasar():
-    # 1. Pantau IHSG terlebih dahulu (^JKSE adalah kode ticker IHSG di Yahoo Finance)
-    laporan_gabungan = "📈 *LAPORAN HARIAN PASAR SAHAM*\n" + "—" * 22 + "\n"
+    laporan_gabungan = "📈 *LAPORAN PASAR & SAHAM UNGGULAN*\n" + "—" * 28 + "\n"
     
+    # 1. Pantau IHSG
     try:
         ihsg = yf.Ticker("^JKSE")
         data_ihsg = ihsg.history(period="2d")
@@ -28,22 +29,26 @@ def cek_pasar():
             h_hari_ini = data_ihsg['Close'].iloc[-1]
             perubahan_ihsg = ((h_hari_ini - h_kemarin) / h_kemarin) * 100
             
-             arah_ihsg = "🟢" if perubahan_ihsg >= 0 else "🔴"
+            arah_ihsg = "🟢" if perubahan_ihsg >= 0 else "🔴"
             laporan_gabungan += f"🇮🇩 *IHSG:* `{h_hari_ini:,.2f}` ({arah_ihsg} `{perubahan_ihsg:+.2f}%`)\n\n"
     except Exception as e:
         print(f"Error mengambil data IHSG: {e}")
 
-    # 2. Daftar Saham yang Dipantau (IHSG + Saham Tren/Blue-Chip)
-    # Anda bisa menambah atau mengganti kode saham di dalam daftar ini (.JK wajib untuk saham Indonesia)
+    # 2. Daftar Banyak Saham Unggulan / Blue-Chip & Tren (Bisa Anda tambah/kurangi sesuka hati)
     daftar_saham = {
-        "GOTO.JK": "GoTo Gojek Tokopedia",
         "BBCA.JK": "Bank Central Asia",
         "BBRI.JK": "Bank Rakyat Indonesia",
         "BMRI.JK": "Bank Mandiri",
-        "ASII.JK": "Astra International"
+        "BBNI.JK": "Bank Negara Indonesia",
+        "GOTO.JK": "GoTo Gojek Tokopedia",
+        "TLKM.JK": "Telkom Indonesia",
+        "ASII.JK": "Astra International",
+        "ADRO.JK": "Adaro Energy Indonesia",
+        "ICBP.JK": "Indofood CBP Sukses Makmur",
+        "UNVR.JK": "Unilever Indonesia"
     }
 
-    laporan_gabungan += "📊 *WATCHLIST SAHAM TERPILIH:*\n"
+    laporan_gabungan += "📊 *WATCHLIST SAHAM PILIHAN:*\n"
     
     for ticker, nama in daftar_saham.items():
         try:
@@ -58,12 +63,12 @@ def cek_pasar():
                 simbol_arah = "🟢" if perubahan >= 0 else "🔴"
                 laporan_gabungan += (
                     f"• *{nama}* (`{ticker}`)\n"
-                    f"  Harga: `{harga_hari_ini:,.2f}` | Perubahan: {simbol_arah} `{perubahan:+.2f}%`\n"
+                    f"  Rp `{harga_hari_ini:,.2f}` | {simbol_arah} `{perubahan:+.2f}%`\n"
                 )
         except Exception as e:
             print(f"Gagal memproses {ticker}: {e}")
 
-    # Kirim seluruh laporan ringkasan ke Telegram Anda
+    # Kirim laporan ke Telegram
     kirim_pesan_telegram(laporan_gabungan)
 
 if __name__ == "__main__":
