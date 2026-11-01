@@ -45,7 +45,7 @@ def cek_pasar():
         "ASII.JK": "Astra International",
         "ADRO.JK": "Adaro Energy Indonesia",
         "ICBP.JK": "Indofood CBP Sukses Makmur",
-        "UNVR.JK": "Unilever Indonesia"
+        "DMAS.JK": "Unilever Indonesia"
     }
 
     laporan_gabungan += "📊 *WATCHLIST SAHAM PILIHAN:*\n"
