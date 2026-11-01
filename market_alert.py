@@ -36,16 +36,8 @@ def cek_pasar():
 
     # 2. Daftar Banyak Saham Unggulan / Blue-Chip & Tren (Bisa Anda tambah/kurangi sesuka hati)
     daftar_saham = {
-        "BBCA.JK": "Bank Central Asia",
-        "BBRI.JK": "Bank Rakyat Indonesia",
-        "BMRI.JK": "Bank Mandiri",
-        "BBNI.JK": "Bank Negara Indonesia",
         "GOTO.JK": "GoTo Gojek Tokopedia",
-        "TLKM.JK": "Telkom Indonesia",
-        "ASII.JK": "Astra International",
-        "ADRO.JK": "Adaro Energy Indonesia",
-        "ICBP.JK": "Indofood CBP Sukses Makmur",
-        "DMAS.JK": "Unilever Indonesia"
+        "DMAS.JK": "PT Puradelta Lestari Tbk"
     }
 
     laporan_gabungan += "📊 *WATCHLIST SAHAM PILIHAN:*\n"
